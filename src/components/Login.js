@@ -76,7 +76,8 @@ const Login = () => {
     }
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = e => {
+    e.preventDefault();
     if (email === "admin" && password === "admin") {
       localStorage.setItem("authToken", "yes");
       setRedirect(true);
