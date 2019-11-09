@@ -424,7 +424,7 @@ const Landing = () => {
                   margin-bottom: 1.25rem;
                 `}
               >
-                Expierience Matters
+                Experience Matters
               </div>
               <div
                 css={css`
