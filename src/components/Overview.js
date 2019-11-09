@@ -1,5 +1,5 @@
 import "styled-components/macro";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { css } from "styled-components";
 import useBreakpoints from "../hooks/breakpoint";
 import ListItem from "./ListItem";
@@ -31,6 +31,13 @@ const DATA = [
 
 const Overview = () => {
   const breakPoint = useBreakpoints();
+  const [response, setResponse] = useState([]);
+
+  useEffect(() => {
+    fetch("http://agno-dev.eu-central-1.elasticbeanstalk.com/api/users").then(
+      r => r.json().then(rJson => setResponse(rJson))
+    );
+  }, []);
 
   return (
     <div
@@ -69,7 +76,7 @@ const Overview = () => {
               max-width: 45%;
             `}
           >
-            Welcome back Kasparas, you have 3 new logs
+            {` Welcome back, you have ${response.length} face logs`}
           </div>
           <img
             alt=""
@@ -90,7 +97,7 @@ const Overview = () => {
             src={require("../assets/nothing.png")}
           />
         </div>
-        <div
+        {/* <div
           css={css`
             display: grid;
             padding: 1.5em 2em;
@@ -179,11 +186,13 @@ const Overview = () => {
               />
             </RadarChart>
           </div>
-        </div>
+        </div> */}
         <div
           css={css`
-            display: grid;
+            display: flex;
+            flex-direction: column;
             padding: 1.5em 2em;
+            grid-column: ${breakPoint !== "lg" ? "1 / span 1" : "1 / span 2"};
             background-color: #fff;
             box-shadow: 0px 0px 15px #00000010;
             border-radius: 10px;
@@ -197,12 +206,17 @@ const Overview = () => {
               margin-bottom: 0.5em;
             `}
           >
-            Recent activity
+            {`Emotion activity (${response.length})`}
           </div>
-          {recentActivity.map((item, index) => (
+          {response.map((item, index) => (
             <ListItem
-              title={item.title}
-              subtitle={item.subtitle}
+              emotion={item.emotion}
+              title={`Face id: ${item.face_id}`}
+              subtitle={`${new Date(item.timestamp).toDateString()} ${new Date(
+                item.timestamp
+              )
+                .toTimeString()
+                .substr(0, 8)}`}
               last={index === recentActivity.length - 1}
             />
           ))}
