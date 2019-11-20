@@ -8,13 +8,16 @@ const ListItem = ({ title, subtitle, emotion, last = false }) => {
       return "😁";
     }
     if (emotion === "Sad") {
-      return "☹️";
+      return "😔";
     }
-    if (emotion === "Fearful") {
-      return "😨";
+    if (emotion === "Neutral") {
+      return "😐";
     }
-    if (emotion === "Suprised") {
+    if (emotion === "Surprised") {
       return "😱";
+    }
+    if (emotion === "in Fear") {
+      return "😨";
     }
     if (emotion === "Disgusted") {
       return "😫";

@@ -54,12 +54,12 @@ const SidebarContainer = ({ logout }) => {
           >
             Overview
           </BigLink>
-          <BigLink
+          {/* <BigLink
             active={isActive("/dashboard/monitoring")}
             onClick={onClick("/dashboard/monitoring")}
           >
             Monitoring
-          </BigLink>
+          </BigLink> */}
         </SidebarMainBlock>
         <SidebarFooter>
           <BigLink onClick={logout}>Logout</BigLink>

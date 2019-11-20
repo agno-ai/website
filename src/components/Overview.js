@@ -7,12 +7,12 @@ import { RadarChart, CircularGridLines } from "react-vis";
 import "react-vis/dist/style.css";
 
 const recentActivity = [
-  { title: "Emotion logged", subtitle: " 13 seconds ago" },
-  { title: "Emotion logged", subtitle: " 53 seconds ago" },
-  { title: "Emotion logged", subtitle: " 7 minutes ago" },
-  { title: "Emotion logged", subtitle: " 2 hours ago" },
-  { title: "Emotion logged", subtitle: " 17 hours ago" },
-  { title: "Emotion logged", subtitle: " 3 days ago" }
+  { title: "Lucas", subtitle: " 13 seconds ago", emotion: "Happy" },
+  { title: "Kasparas", subtitle: " 53 seconds ago", emotion: "Sad" },
+  { title: "Sasha", subtitle: " 7 minutes ago", emotion: "Disgusted" },
+  { title: "Sasha", subtitle: " 2 hours ago", emotion: "in Fear" },
+  { title: "Anna", subtitle: " 17 hours ago", emotion: "in Fear" },
+  { title: "Sydney", subtitle: " 3 days ago", emotion: "in Fear" }
 ];
 
 const DATA = [
@@ -34,9 +34,9 @@ const Overview = () => {
   const [response, setResponse] = useState([]);
 
   useEffect(() => {
-    fetch("http://agno-dev.eu-central-1.elasticbeanstalk.com/api/users").then(
-      r => r.json().then(rJson => setResponse(rJson))
-    );
+    fetch(
+      "http://agno-dev.eu-central-1.elasticbeanstalk.com/api/users"
+    ).then(r => r.json().then(rJson => setResponse(rJson)));
   }, []);
 
   return (
@@ -211,13 +211,13 @@ const Overview = () => {
           {response.map((item, index) => (
             <ListItem
               emotion={item.emotion}
-              title={`Face id: ${item.face_id}`}
+              title={`${item.face_id} was ${item.emotion}`}
               subtitle={`${new Date(item.timestamp).toDateString()} ${new Date(
                 item.timestamp
               )
                 .toTimeString()
                 .substr(0, 8)}`}
-              last={index === recentActivity.length - 1}
+              last={index === response.length - 1}
             />
           ))}
         </div>

@@ -261,7 +261,7 @@ const Landing = () => {
                   text-align: center;
                 `}
               >
-                Security
+                Seamless
               </div>
               <div
                 css={css`
@@ -273,7 +273,7 @@ const Landing = () => {
                   text-align: center;
                 `}
               >
-                AI powered security to ensure that only you see your data
+                AI powered to work smoothly and quickly.
               </div>
               <img
                 css={css`
@@ -320,7 +320,7 @@ const Landing = () => {
                   text-align: center;
                 `}
               >
-                Track your sleep deprivation and emotions
+                Track and log your emotions seamlessly
               </div>
               <img
                 css={css`
@@ -434,9 +434,9 @@ const Landing = () => {
                 `}
               >
                 Track what matters to you and live a better and happier life. No
-                friction, it's all magic! The agno.io mirror works by using the
-                state of the art artificial intelligence to deliver stellar
-                performance.
+                friction, it's all magic! The agno mirror works by using the
+                cutting edge artificial intelligence to deliver stellar
+                performance so you can focus on what really matters - your face.
               </div>
             </div>
           </div>
