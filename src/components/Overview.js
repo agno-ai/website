@@ -3,40 +3,29 @@ import React, { useEffect, useState } from "react";
 import { css } from "styled-components";
 import useBreakpoints from "../hooks/breakpoint";
 import ListItem from "./ListItem";
-import { RadarChart, CircularGridLines } from "react-vis";
 import "react-vis/dist/style.css";
-
-const recentActivity = [
-  { title: "Lucas", subtitle: " 13 seconds ago", emotion: "Happy" },
-  { title: "Kasparas", subtitle: " 53 seconds ago", emotion: "Sad" },
-  { title: "Sasha", subtitle: " 7 minutes ago", emotion: "Disgusted" },
-  { title: "Sasha", subtitle: " 2 hours ago", emotion: "in Fear" },
-  { title: "Anna", subtitle: " 17 hours ago", emotion: "in Fear" },
-  { title: "Sydney", subtitle: " 3 days ago", emotion: "in Fear" }
-];
-
-const DATA = [
-  {
-    name: "Emotions",
-    sad: 5,
-    happy: 4,
-    fear: 0,
-    disgust: 4,
-    anger: 5,
-    suprise: 3,
-    fill: "#1F36AB",
-    stroke: "#1F36AB"
-  }
-];
+import { formatDistance } from "date-fns";
 
 const Overview = () => {
   const breakPoint = useBreakpoints();
   const [response, setResponse] = useState([]);
 
   useEffect(() => {
-    fetch(
-      "http://agno-dev.eu-central-1.elasticbeanstalk.com/api/users"
-    ).then(r => r.json().then(rJson => setResponse(rJson)));
+    fetch("http://agno-dev.eu-central-1.elasticbeanstalk.com/api/users").then(
+      r =>
+        r.json().then(rJson => {
+          rJson.sort((a, b) => {
+            if (
+              new Date(a.timestamp).valueOf() > new Date(b.timestamp).valueOf()
+            ) {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
+          setResponse(rJson);
+        })
+    );
   }, []);
 
   return (
@@ -97,96 +86,6 @@ const Overview = () => {
             src={require("../assets/nothing.png")}
           />
         </div>
-        {/* <div
-          css={css`
-            display: grid;
-            padding: 1.5em 2em;
-            background-color: #fff;
-            box-shadow: 0px 0px 15px #00000010;
-            border-radius: 10px;
-            min-height: 21rem;
-          `}
-        >
-          <div
-            css={css`
-              font-weight: 800;
-              font-size: 0.65em;
-              margin-bottom: 2em;
-            `}
-          >
-            Emotion graph
-          </div>
-          <div
-            css={css`
-              display: flex;
-              flex: 1;
-              align-items: center;
-              justify-content: center;
-            `}
-          >
-            <RadarChart
-              css={css`
-                font-weight: 600;
-                font-size: 0.5em;
-                color: #333;
-                justify-content: center;
-              `}
-              style={{
-                polygons: {
-                  strokeWidth: 2,
-                  strokeOpacity: 0.8,
-                  fillOpacity: 0.2,
-                  color: "#000"
-                },
-                labels: {
-                  textAnchor: "middle"
-                },
-                axes: {
-                  line: {
-                    fillOpacity: 0.5,
-                    strokeWidth: 0.5,
-                    strokeOpacity: 0.8
-                  },
-                  ticks: {
-                    fillOpacity: 0,
-                    strokeOpacity: 0
-                  }
-                }
-              }}
-              margin={{
-                left: 60,
-                top: 30,
-                bottom: 30,
-                right: 60
-              }}
-              tickFormat={t => ""}
-              data={DATA}
-              startingAngle={0}
-              domains={[
-                { name: "Sad", domain: [0, 7], getValue: d => d.sad },
-                {
-                  name: "Happy",
-                  domain: [0, 7],
-                  getValue: d => d.happy
-                },
-                { name: "Fearful", domain: [0, 7], getValue: d => d.fear },
-                {
-                  name: "Disgusted",
-                  domain: [0, 7],
-                  getValue: d => d.disgust
-                },
-                { name: "Angry", domain: [0, 7], getValue: d => d.anger },
-                { name: "Suprised", domain: [0, 7], getValue: d => d.suprise }
-              ]}
-              width={400}
-              height={400}
-            >
-              <CircularGridLines
-                tickValues={[...new Array(10)].map((v, i) => i / 10 - 1)}
-              />
-            </RadarChart>
-          </div>
-        </div> */}
         <div
           css={css`
             display: flex;
@@ -212,11 +111,10 @@ const Overview = () => {
             <ListItem
               emotion={item.emotion}
               title={`${item.face_id} was ${item.emotion}`}
-              subtitle={`${new Date(item.timestamp).toDateString()} ${new Date(
-                item.timestamp
-              )
-                .toTimeString()
-                .substr(0, 8)}`}
+              subtitle={formatDistance(new Date(item.timestamp), new Date(), {
+                includeSeconds: true,
+                addSuffix: true
+              })}
               last={index === response.length - 1}
             />
           ))}

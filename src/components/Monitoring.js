@@ -43,7 +43,7 @@ const Monitoring = () => {
               max-width: 40%;
             `}
           >
-            Based on emotions in last 2 months you seem to be depressive
+            Based on your emotions you seem to be depressive.
           </div>
           <img
             alt=""
